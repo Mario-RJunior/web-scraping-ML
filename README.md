@@ -13,4 +13,4 @@
   - Pandas
   - Numpy
   - Re
-  - sleep
+  - Sleep
