@@ -1,0 +1,5 @@
+- requests
+- Beautifulsoup
+- numpy
+- pandas
+- re
