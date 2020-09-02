@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import re
 import numpy as np
 from time import sleep
+import pandas as pd
 
 zonas = ['norte', 'sul', 'leste', 'oeste']
 url_ml = 'https://imoveis.mercadolivre.com.br/casas/aluguel/sao-paulo/sao-paulo-zona-{}'
@@ -13,18 +14,17 @@ re_areas = r'<li class="ui-search-card-attributes__attribute">(.*) m²'
 
 
 class Scraper:
+    zona = []
+    area = []
+    quartos = []
+    preco = []
+    dados = {}
 
     def __init__(self, url, zona):
         self.zona = zona
         self.url = url.format(zona)
         self.c = requests.get(self.url).content  # Tipo bytes
         self.soup = BeautifulSoup(self.c, 'html.parser')  # Tipo bs4.BeautifulSoup
-        self.quartos = []
-        self.metros = []
-        self.dados = {'zona': [],
-                      'area': [],
-                      'quartos': [],
-                      'preco': []}
 
     def get_atributes(self):
 
@@ -37,33 +37,42 @@ class Scraper:
             quartos = re.findall(re_quartos, dado.text)
 
             for p in precos:
-                self.dados['preco'].append(p)
+                Scraper.preco.append(p)
 
             if len(areas) == 0:
                 areas.append(np.nan)
             for a in areas:
-                self.dados['area'].append(a)
+                Scraper.area.append(a)
 
-            temp = []  # Lista temporária
             if len(quartos) > 0:
                 n_quartos = quartos[0].replace('quarto', '').strip()
                 for q in quartos:
-                    temp.append(n_quartos)
+                    Scraper.quartos.append(n_quartos)
             else:
-                temp.append(np.nan)
+                Scraper.quartos.append(np.nan)
 
-            for q in temp:
-                self.dados['quartos'].append(q)
+            Scraper.zona.append(self.zona)
 
-            self.dados['zona'].append(self.zona)
-        sleep(2)
+            Scraper.dados['zona'] = Scraper.zona
+            Scraper.dados['quartos'] = Scraper.quartos
+            Scraper.dados['area'] = Scraper.area
+            Scraper.dados['preco'] = Scraper.preco
 
-        print(self.dados)
-        print(len(self.dados['zona']), len(self.dados['area']), len(self.dados['quartos']), len(self.dados['preco']))
-        print('=' * 100)
+        sleep(3)
+        return Scraper.dados
+
+    def create_csv(self):
+        df = pd.DataFrame(self.dados)
+        for i in [48, 96, 144]:
+            if len(df) == i:
+                continue
+            if len(df) == 192:
+                df.to_csv('mercado_livre.csv', index=False)
+                break
 
 
 if __name__ == '__main__':
     for zona in zonas:
         scrap = Scraper(url_ml, zona)
         scrap.get_atributes()
+        scrap.create_csv()
