@@ -9,6 +9,7 @@
  ### Acessar / obter os conteúdos:
   - Requests
   - BeautifulSoup
+  - Time
 ### Organizar os dados:
   - Pandas
   - Numpy
