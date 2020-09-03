@@ -6,7 +6,8 @@ from time import sleep
 import pandas as pd
 
 zonas = ['norte', 'sul', 'leste', 'oeste']
-url_ml = 'https://imoveis.mercadolivre.com.br/casas/aluguel/sao-paulo/sao-paulo-zona-{}'
+paginas = ['', '_Desde_49', '_Desde_97', '_Desde_145', '_Desde_193', '_Desde_241', '_Desde_289']
+url_ml = 'https://imoveis.mercadolivre.com.br/casas/aluguel/sao-paulo/sao-paulo-zona-{}/{}'
 
 re_precos = r'<span class="price-tag-fraction">(.*)<'
 re_quartos = r'[1-9]{1,2} quarto'
@@ -20,15 +21,17 @@ class Scraper:
     preco = []
     dados = {}
 
-    def __init__(self, url, zona):
+    def __init__(self, url, zona, pagina):
+
         self.zona = zona
-        self.url = url.format(zona)
-        self.c = requests.get(self.url).content  # Tipo bytes
-        self.soup = BeautifulSoup(self.c, 'html.parser')  # Tipo bs4.BeautifulSoup
+        self.url = url.format(zona, pagina)
 
     def get_atributes(self):
 
-        for dado in self.soup.select('.ui-search-result__content-wrapper'):
+        c = requests.get(self.url).content
+        soup = BeautifulSoup(c, 'html.parser')
+
+        for dado in soup.select('.ui-search-result__content-wrapper'):
             preco = dado.select_one('.price-tag-fraction')
             metros = dado.select_one('.ui-search-card-attributes__attribute ')
 
@@ -58,21 +61,20 @@ class Scraper:
             Scraper.dados['area'] = Scraper.area
             Scraper.dados['preco'] = Scraper.preco
 
-        sleep(3)
+        sleep(5)
         return Scraper.dados
 
     def create_csv(self):
         df = pd.DataFrame(self.dados)
-        for i in [48, 96, 144]:
-            if len(df) == i:
-                continue
-            if len(df) == 192:
-                df.to_csv('mercado_livre.csv', index=False)
+        for i in range(48, 1344, 48):
+            if len(df) == 1344:
+                df.to_csv('dados_imoveis.csv', index=False)
                 break
 
 
 if __name__ == '__main__':
     for zona in zonas:
-        scrap = Scraper(url_ml, zona)
-        scrap.get_atributes()
-        scrap.create_csv()
+        for pagina in paginas:
+            scrap = Scraper(url_ml, zona, pagina)
+            scrap.get_atributes()
+            scrap.create_csv()
