@@ -65,7 +65,7 @@ class Scraper:
         return Scraper.dados
 
     def create_csv(self):
-        df = pd.DataFrame(self.dados)
+        df = pd.DataFrame(Scraper.dados)
         for i in range(48, 1344, 48):
             if len(df) == 1344:
                 df.to_csv('dados_imoveis.csv', index=False)
