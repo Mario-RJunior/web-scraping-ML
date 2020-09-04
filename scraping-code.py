@@ -40,11 +40,15 @@ class Scraper:
             quartos = re.findall(re_quartos, dado.text)
 
             for p in precos:
-                Scraper.preco.append(p)
+                if isinstance(p, str):
+                    p = int(p.replace('.', '').replace(',', '').strip())
+                    Scraper.preco.append(p)
 
             if len(areas) == 0:
                 areas.append(np.nan)
             for a in areas:
+                if isinstance(a, str):
+                    a = int(a.replace('.', '').replace(',', '').strip())
                 Scraper.area.append(a)
 
             if len(quartos) == 0:
