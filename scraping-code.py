@@ -10,7 +10,7 @@ paginas = ['', '_Desde_49', '_Desde_97', '_Desde_145', '_Desde_193', '_Desde_241
 url_ml = 'https://imoveis.mercadolivre.com.br/casas/aluguel/sao-paulo/sao-paulo-zona-{}/{}'
 
 re_precos = r'<span class="price-tag-fraction">(.*)<'
-re_quartos = r'[1-9]{1,2} quarto'
+re_quartos = r'([1-9]{1,2}) quarto'
 re_areas = r'<li class="ui-search-card-attributes__attribute">(.*) m²'
 
 
@@ -47,12 +47,10 @@ class Scraper:
             for a in areas:
                 Scraper.area.append(a)
 
-            if len(quartos) > 0:
-                n_quartos = quartos[0].replace('quarto', '').strip()
-                for q in quartos:
-                    Scraper.quartos.append(n_quartos)
-            else:
-                Scraper.quartos.append(np.nan)
+            if len(quartos) == 0:
+                quartos.append(np.nan)
+            for q in quartos:
+                Scraper.quartos.append(q)
 
             Scraper.zona.append(self.zona)
 
@@ -61,7 +59,7 @@ class Scraper:
             Scraper.dados['area'] = Scraper.area
             Scraper.dados['preco'] = Scraper.preco
 
-        sleep(5)
+        sleep(2)
         return Scraper.dados
 
     def create_csv(self):
@@ -75,6 +73,7 @@ class Scraper:
 if __name__ == '__main__':
     for zona in zonas:
         for pagina in paginas:
+            sleep(2)
             scrap = Scraper(url_ml, zona, pagina)
             scrap.get_atributes()
             scrap.create_csv()
