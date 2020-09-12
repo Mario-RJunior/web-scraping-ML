@@ -68,7 +68,7 @@ class Scraper:
 
     def create_csv(self):
         df = pd.DataFrame(self.dados)
-        df.to_csv('dados_imoveis5.csv', index=False)
+        df.to_csv('dados_imoveis.csv', index=False)
 
 
 if __name__ == '__main__':
