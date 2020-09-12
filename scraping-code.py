@@ -15,10 +15,10 @@ re_areas = r'<li class="ui-search-card-attributes__attribute">(.*) m²'
 
 
 class Scraper:
-    zona = []
-    area = []
+    zonas = []
+    areas = []
     quartos = []
-    preco = []
+    precos = []
     dados = {}
 
     def __init__(self, url, zona, pagina):
@@ -42,35 +42,35 @@ class Scraper:
             for p in precos:
                 if isinstance(p, str):
                     p = int(p.replace('.', '').replace(',', '').strip())
-                    Scraper.preco.append(p)
+                    self.precos.append(p)
 
             if len(areas) == 0:
                 areas.append(np.nan)
             for a in areas:
                 if isinstance(a, str):
                     a = int(a.replace('.', '').replace(',', '').strip())
-                Scraper.area.append(a)
+                self.areas.append(a)
 
             if len(quartos) == 0:
                 quartos.append(np.nan)
             for q in quartos:
-                Scraper.quartos.append(q)
+                self.quartos.append(q)
 
-            Scraper.zona.append(self.zona)
+            self.zonas.append(self.zona)
 
-            Scraper.dados['zona'] = Scraper.zona
-            Scraper.dados['quartos'] = Scraper.quartos
-            Scraper.dados['area'] = Scraper.area
-            Scraper.dados['preco'] = Scraper.preco
+            self.dados['zona'] = self.zonas
+            self.dados['quartos'] = self.quartos
+            self.dados['area'] = self.areas
+            self.dados['preco'] = self.precos
 
         sleep(2)
-        return Scraper.dados
+        return self.dados
 
     def create_csv(self):
         df = pd.DataFrame(Scraper.dados)
         for i in range(48, 1344, 48):
             if len(df) == 1344:
-                df.to_csv('dados_imoveis.csv', index=False)
+                df.to_csv('dados_imoveis3.csv', index=False)
                 break
 
 
