@@ -10,7 +10,7 @@ paginas = ['', '_Desde_49', '_Desde_97', '_Desde_145', '_Desde_193', '_Desde_241
 url_ml = 'https://imoveis.mercadolivre.com.br/casas/aluguel/sao-paulo/sao-paulo-zona-{}/{}'
 
 re_precos = r'<span class="price-tag-fraction">(.*)<'
-re_quartos = r'([1-9]{1,2}) quarto'
+re_quartos = r'([1-9]{1,2}) quarto[s]?'
 re_areas = r'<li class="ui-search-card-attributes__attribute">(.*) m²'
 
 
