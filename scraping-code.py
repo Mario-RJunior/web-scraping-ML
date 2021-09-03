@@ -94,8 +94,8 @@ def create_dataframe(lista_precos, lista_atributos):
     return df
 
 
-def create_csv(self):
-    df = pd.DataFrame(self.dados)
+def create_csv(dataframe):
+    df = pd.DataFrame(dataframe)
     df.to_csv('dados_imoveis.csv', index=False)
 
 def main():
@@ -105,8 +105,8 @@ def main():
         html = get_html(i)
         p = get_precos(html)
         at = get_atributos(html)
-        dataframe = create_dataframe(p, at)
-        create_csv(dataframe)
+        df = create_dataframe(p, at)
+        create_csv(df)
 
 
 if __name__ == '__main__':
