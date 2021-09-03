@@ -98,34 +98,16 @@ def create_csv(self):
     df = pd.DataFrame(self.dados)
     df.to_csv('dados_imoveis.csv', index=False)
 
-
-if __name__ == '__main__':
-    t1 = time()
+def main():
     gen = create_links(2)
 
     for i in gen:
-        print(i)
+        html = get_html(i)
+        p = get_precos(html)
+        at = get_atributos(html)
+        dataframe = create_dataframe(p, at)
+        create_csv(dataframe)
 
-    """html = get_html(
-        'https://imoveis.mercadolivre.com.br/casas/aluguel/sao-paulo/sao-paulo-zona-sul/_Desde_49')
-    
-    print(f'get_html: {time() - t1} segundos')
-    print()
-    
-    t2 = time()
-    prec = get_precos(html)
-    print(f'get_precos: {time() - t2} segundos')
-    print()
 
-    t3 = time()
-    atributos = get_atributos(html)
-    print(f'get_atributos: {time() - t3} segundos')
-    print()
-
-    t4 = time()
-    print(cria_dataframe(prec, atributos))
-    print(f'cria_dataframe: {time() - t4} segundos')
-
-    print()
-    print(f'Tempo total: {time() - t1}')
-"""
+if __name__ == '__main__':
+    main()
