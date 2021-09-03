@@ -71,7 +71,7 @@ def get_atributos(soup_html):
         if len(metros) == 0:
             lista_areas.append(np.nan)
         else:
-            lista_areas.append(int(metros[0]))
+            lista_areas.append(int(metros[0].replace(',', '')))
 
         if len(quartos) == 0:
             lista_quartos.append(np.nan)
@@ -103,6 +103,7 @@ def main():
 
     for i in gen:
         html = get_html(i)
+        sleep(2)
         p = get_precos(html)
         at = get_atributos(html)
         df = create_dataframe(p, at)
