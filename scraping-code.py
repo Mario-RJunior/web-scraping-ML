@@ -92,7 +92,7 @@ def create_dataframe(lista_precos, lista_areas, lista_quartos):
 
 def create_csv(dataframe):
     df = pd.DataFrame(dataframe)
-    df.to_csv('dados_imoveis2.csv', index=False)
+    df.to_csv('dados_imoveis_normal.csv', index=False)
 
 
 def main():
@@ -119,4 +119,4 @@ if __name__ == '__main__':
     main()
     print(f'Tempo de execução: {time() - t0} segundos.')
 
-    # Tempo de execução: 91.45550084114075 segundos.
+    # Tempo de execução: 93.20756077766418 segundos.
