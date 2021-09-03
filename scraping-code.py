@@ -98,13 +98,14 @@ def create_csv(dataframe):
     df = pd.DataFrame(dataframe)
     df.to_csv('dados_imoveis2.csv', index=False)
 
+
 def main():
     gen = create_links(2)
     precos_temp = []
     area_temp = []
     quartos_temp = []
-    
-    for i in gen:        
+
+    for i in gen:
         html = get_html(i)
         sleep(2)
         p = get_precos(html)
@@ -113,9 +114,10 @@ def main():
         precos_temp = precos_temp + p
         area_temp = area_temp + at[0]
         quartos_temp = quartos_temp + at[1]
-    
+
     df = create_dataframe(precos_temp, area_temp, quartos_temp)
-    create_csv(df)    
+    create_csv(df)
+
 
 if __name__ == '__main__':
     main()
