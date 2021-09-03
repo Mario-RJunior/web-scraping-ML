@@ -82,12 +82,12 @@ def get_atributos(soup_html):
     return lista_areas, lista_quartos
 
 
-def create_dataframe(lista_precos, lista_atributos):
+def create_dataframe(lista_precos, lista_areas, lista_quartos):
     dados = {}
 
     dados['preco'] = lista_precos
-    dados['area'] = lista_atributos[0]
-    dados['quartos'] = lista_atributos[1]
+    dados['area'] = lista_areas
+    dados['quartos'] = lista_quartos
 
     df = pd.DataFrame(dados)
 
@@ -96,18 +96,38 @@ def create_dataframe(lista_precos, lista_atributos):
 
 def create_csv(dataframe):
     df = pd.DataFrame(dataframe)
-    df.to_csv('dados_imoveis.csv', index=False)
+    df.to_csv('dados_imoveis2.csv', index=False)
 
 def main():
     gen = create_links(2)
-
-    for i in gen:
+    precos_temp = []
+    area_temp = []
+    quartos_temp = []
+    
+    for i in gen:        
         html = get_html(i)
         sleep(2)
         p = get_precos(html)
         at = get_atributos(html)
-        df = create_dataframe(p, at)
-        create_csv(df)
+
+        precos_temp = precos_temp + p
+        area_temp = area_temp + at[0]
+        quartos_temp = quartos_temp + at[1]
+    
+    df = create_dataframe(precos_temp, area_temp, quartos_temp)
+    create_csv(df)    
+
+
+    """for i in gen:
+        html = get_html(i)
+        sleep(2)
+        p = get_precos(html)
+        at = get_atributos(html)
+    
+    df = create_dataframe(p, at)
+    print(df)"""
+
+    #create_csv(df)
 
 
 if __name__ == '__main__':
