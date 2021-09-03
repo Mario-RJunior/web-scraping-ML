@@ -82,7 +82,7 @@ def get_atributos(soup_html):
     return lista_areas, lista_quartos
 
 
-def cria_dataframe(lista_precos, lista_atributos):
+def create_dataframe(lista_precos, lista_atributos):
     dados = {}
 
     dados['preco'] = lista_precos
