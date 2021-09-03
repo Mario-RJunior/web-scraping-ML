@@ -116,4 +116,8 @@ def main():
 
 
 if __name__ == '__main__':
+    t0 = time()
     main()
+    print(f'Tempo de execução: {time() - t0} segundos.')
+
+    # Tempo de execução: 33.84523367881775 segundos.
