@@ -96,14 +96,13 @@ def create_csv(dataframe):
 
 
 def main():
-    gen = create_links(2)
+    gen = create_links(10)
     precos_temp = []
     area_temp = []
     quartos_temp = []
 
     for i in gen:
         html = get_html(i)
-        sleep(2)
         p = get_precos(html)
         at = get_atributos(html)
 
@@ -120,4 +119,4 @@ if __name__ == '__main__':
     main()
     print(f'Tempo de execução: {time() - t0} segundos.')
 
-    # Tempo de execução: 33.84523367881775 segundos.
+    # Tempo de execução: 91.45550084114075 segundos.
