@@ -117,18 +117,5 @@ def main():
     df = create_dataframe(precos_temp, area_temp, quartos_temp)
     create_csv(df)    
 
-
-    """for i in gen:
-        html = get_html(i)
-        sleep(2)
-        p = get_precos(html)
-        at = get_atributos(html)
-    
-    df = create_dataframe(p, at)
-    print(df)"""
-
-    #create_csv(df)
-
-
 if __name__ == '__main__':
     main()
