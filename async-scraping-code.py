@@ -142,4 +142,4 @@ if __name__ == '__main__':
     main()
     print(f'Tempo de execução: {time() - t0} segundos.')
 
-    # Tempo de execução: 29.855445384979248 segundos.
+    # Tempo de execução: 29.01470398902893 segundos.
