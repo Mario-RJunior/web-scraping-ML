@@ -6,10 +6,6 @@ from time import sleep, time
 import pandas as pd
 
 
-paginas = ['', '_Desde_49', '_Desde_97', '_Desde_145',
-           '_Desde_193', '_Desde_241', '_Desde_289']
-
-
 def create_links(quantidade):
     zonas = ['norte', 'sul', 'leste', 'oeste']
     link = 'https://imoveis.mercadolivre.com.br/casas/aluguel/sao-paulo/sao-paulo-zona-{}/{}'
