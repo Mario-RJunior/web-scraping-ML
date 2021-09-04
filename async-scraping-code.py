@@ -99,11 +99,6 @@ async def create_dataframe(lista_precos, lista_areas, lista_quartos):
     return df
 
 
-async def create_csv(dataframe):
-    df = pd.DataFrame(dataframe)
-    df.to_csv('dados_imoveis2.csv', index=False)
-
-
 async def create_csv():
     links = await create_links(10)
     tarefas = []
