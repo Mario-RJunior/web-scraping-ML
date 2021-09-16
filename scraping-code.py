@@ -115,7 +115,7 @@ def main():
     for i in gen:
         html = get_html(i[0])
         p = get_precos(html)
-        
+
         if i[1] == 'norte':
             lista_norte.extend(p)
 
@@ -127,7 +127,7 @@ def main():
 
         else:
             lista_oeste.extend(p)
-        
+
         at = get_atributos(html)
 
         precos_temp = precos_temp + p
@@ -139,28 +139,10 @@ def main():
     teste['leste'] = len(lista_leste)
     teste['oeste'] = len(lista_oeste)
 
-    zonas = get_zonas(teste)   
+    zonas = get_zonas(teste)
 
     df = create_dataframe(precos_temp, area_temp, quartos_temp, zonas)
     create_csv(df)
-
-    """
-        html = get_html(i)
-        print(html)
-        #p = get_precos(html)
-
-        #print(p)
-        print('-' * 50)
-
-        at = get_atributos(html)
-
-        precos_temp = precos_temp + p
-        area_temp = area_temp + at[0]
-        quartos_temp = quartos_temp + at[1]
-
-    df = create_dataframe(precos_temp, area_temp, quartos_temp)
-    create_csv(df)
-"""
 
 
 if __name__ == '__main__':
