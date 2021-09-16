@@ -106,7 +106,7 @@ def main():
     precos_temp = []
     area_temp = []
     quartos_temp = []
-    teste = {}
+    zonas_quant = {}
     lista_norte = []
     lista_sul = []
     lista_leste = []
@@ -134,12 +134,12 @@ def main():
         area_temp = area_temp + at[0]
         quartos_temp = quartos_temp + at[1]
 
-    teste['norte'] = len(lista_norte)
-    teste['sul'] = len(lista_sul)
-    teste['leste'] = len(lista_leste)
-    teste['oeste'] = len(lista_oeste)
+    zonas_quant['norte'] = len(lista_norte)
+    zonas_quant['sul'] = len(lista_sul)
+    zonas_quant['leste'] = len(lista_leste)
+    zonas_quant['oeste'] = len(lista_oeste)
 
-    zonas = get_zonas(teste)
+    zonas = get_zonas(zonas_quant)
 
     df = create_dataframe(precos_temp, area_temp, quartos_temp, zonas)
     create_csv(df)
