@@ -83,12 +83,13 @@ def get_atributos(soup_html):
     return lista_areas, lista_quartos
 
 
-def create_dataframe(lista_precos, lista_areas, lista_quartos):
+def create_dataframe(lista_precos, lista_areas, lista_quartos, lista_zonas):
     dados = {}
 
     dados['preco'] = lista_precos
     dados['area'] = lista_areas
     dados['quartos'] = lista_quartos
+    dados['zona'] = lista_zonas
 
     df = pd.DataFrame(dados)
 
@@ -97,7 +98,7 @@ def create_dataframe(lista_precos, lista_areas, lista_quartos):
 
 def create_csv(dataframe):
     df = pd.DataFrame(dataframe)
-    df.to_csv('dados_imoveis_normal.csv', index=False)
+    df.to_csv('dados_imoveis_final.csv', index=False)
 
 
 def main():
@@ -114,7 +115,7 @@ def main():
     for i in gen:
         html = get_html(i[0])
         p = get_precos(html)
-
+        
         if i[1] == 'norte':
             lista_norte.extend(p)
 
@@ -126,25 +127,22 @@ def main():
 
         else:
             lista_oeste.extend(p)
+        
+        at = get_atributos(html)
+
+        precos_temp = precos_temp + p
+        area_temp = area_temp + at[0]
+        quartos_temp = quartos_temp + at[1]
 
     teste['norte'] = len(lista_norte)
     teste['sul'] = len(lista_sul)
     teste['leste'] = len(lista_leste)
     teste['oeste'] = len(lista_oeste)
 
-    print(teste)
-    """
-        
-        while cont < 2:
-            html = get_html(i[0])
-            print(html)
-            p = get_precos(html)
-            x.append(len(p))
-            print(i[1])
-            print(x)
-            print('-' * 50)"""
-    #print('-' * 100)
-    #cont += 1
+    zonas = get_zonas(teste)   
+
+    df = create_dataframe(precos_temp, area_temp, quartos_temp, zonas)
+    create_csv(df)
 
     """
         html = get_html(i)
