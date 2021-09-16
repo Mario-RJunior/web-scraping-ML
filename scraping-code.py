@@ -22,7 +22,7 @@ def create_links(quantidade):
                 num_pag = f'_Desde_{var}'
                 var += 48
 
-            yield link.format(zona, num_pag)
+            yield (link.format(zona, num_pag), zona)
             cont += 1
 
 
@@ -31,6 +31,11 @@ def get_html(link):
     soup = BeautifulSoup(c, 'html.parser')
 
     return soup
+
+
+def get_zonas(dicionario_zonas):
+    l_zonas = [k for k, v in dicionario_zonas.items() for _ in range(v)]
+    return l_zonas
 
 
 def get_precos(soup_html):
@@ -96,14 +101,59 @@ def create_csv(dataframe):
 
 
 def main():
-    gen = create_links(10)
+    gen = create_links(2)
     precos_temp = []
     area_temp = []
     quartos_temp = []
+    teste = {}
+    lista_norte = []
+    lista_sul = []
+    lista_leste = []
+    lista_oeste = []
 
     for i in gen:
-        html = get_html(i)
+        html = get_html(i[0])
         p = get_precos(html)
+
+        if i[1] == 'norte':
+            lista_norte.extend(p)
+
+        elif i[1] == 'sul':
+            lista_sul.extend(p)
+
+        elif i[1] == 'leste':
+            lista_leste.extend(p)
+
+        else:
+            lista_oeste.extend(p)
+
+    teste['norte'] = len(lista_norte)
+    teste['sul'] = len(lista_sul)
+    teste['leste'] = len(lista_leste)
+    teste['oeste'] = len(lista_oeste)
+
+    print(teste)
+    """
+        
+        while cont < 2:
+            html = get_html(i[0])
+            print(html)
+            p = get_precos(html)
+            x.append(len(p))
+            print(i[1])
+            print(x)
+            print('-' * 50)"""
+    #print('-' * 100)
+    #cont += 1
+
+    """
+        html = get_html(i)
+        print(html)
+        #p = get_precos(html)
+
+        #print(p)
+        print('-' * 50)
+
         at = get_atributos(html)
 
         precos_temp = precos_temp + p
@@ -112,6 +162,7 @@ def main():
 
     df = create_dataframe(precos_temp, area_temp, quartos_temp)
     create_csv(df)
+"""
 
 
 if __name__ == '__main__':
