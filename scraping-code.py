@@ -98,7 +98,7 @@ def create_dataframe(lista_precos, lista_areas, lista_quartos, lista_zonas):
 
 def create_csv(dataframe):
     df = pd.DataFrame(dataframe)
-    df.to_csv('dados_imoveis_final.csv', index=False)
+    df.to_csv('dados_imoveis_final_teste.csv', index=False)
 
 
 def main():
@@ -106,27 +106,16 @@ def main():
     precos_temp = []
     area_temp = []
     quartos_temp = []
-    zonas_quant = {}
-    lista_norte = []
-    lista_sul = []
-    lista_leste = []
-    lista_oeste = []
+    d = {}
 
     for i in gen:
         html = get_html(i[0])
         p = get_precos(html)
 
-        if i[1] == 'norte':
-            lista_norte.extend(p)
-
-        elif i[1] == 'sul':
-            lista_sul.extend(p)
-
-        elif i[1] == 'leste':
-            lista_leste.extend(p)
-
+        if i[1] not in d.keys():
+            d[i[1]] = len(p)
         else:
-            lista_oeste.extend(p)
+            d[i[1]] += len(p)
 
         at = get_atributos(html)
 
@@ -134,12 +123,7 @@ def main():
         area_temp = area_temp + at[0]
         quartos_temp = quartos_temp + at[1]
 
-    zonas_quant['norte'] = len(lista_norte)
-    zonas_quant['sul'] = len(lista_sul)
-    zonas_quant['leste'] = len(lista_leste)
-    zonas_quant['oeste'] = len(lista_oeste)
-
-    zonas = get_zonas(zonas_quant)
+    zonas = get_zonas(d)
 
     df = create_dataframe(precos_temp, area_temp, quartos_temp, zonas)
     create_csv(df)
