@@ -106,16 +106,16 @@ def main():
     precos_temp = []
     area_temp = []
     quartos_temp = []
-    d = {}
+    zonas_qtd = {}
 
     for i in gen:
         html = get_html(i[0])
         p = get_precos(html)
 
-        if i[1] not in d.keys():
-            d[i[1]] = len(p)
+        if i[1] not in zonas_qtd.keys():
+            zonas_qtd[i[1]] = len(p)
         else:
-            d[i[1]] += len(p)
+            zonas_qtd[i[1]] += len(p)
 
         at = get_atributos(html)
 
@@ -123,7 +123,7 @@ def main():
         area_temp = area_temp + at[0]
         quartos_temp = quartos_temp + at[1]
 
-    zonas = get_zonas(d)
+    zonas = get_zonas(zonas_qtd)
 
     df = create_dataframe(precos_temp, area_temp, quartos_temp, zonas)
     create_csv(df)
