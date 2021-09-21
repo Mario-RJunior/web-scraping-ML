@@ -5,33 +5,38 @@ from time import time
 import pandas as pd
 import asyncio
 import aiohttp
+from pprint import pprint
 
 
-async def create_links(quantidade):
-    zonas = ['norte', 'sul', 'leste', 'oeste']
+async def create_links(quantidade, zona):
+    #zonas = ['norte', 'sul', 'leste', 'oeste']
     link = 'https://imoveis.mercadolivre.com.br/casas/aluguel/sao-paulo/sao-paulo-zona-{}/{}'
     links = []
+    dic_links = {}
 
-    for zona in zonas:
-        cont = 0
-        var = 49
+    #for zona in zonas:
+    cont = 0
+    var = 49
 
-        while cont < quantidade:
+    while cont < quantidade:
 
-            if cont == 0:
-                num_pag = ''
+        if cont == 0:
+            num_pag = ''
 
-            else:
-                num_pag = f'_Desde_{var}'
-                var += 48
+        else:
+            num_pag = f'_Desde_{var}'
+            var += 48
 
-            links.append(link.format(zona, num_pag))
-            cont += 1
+        links.append(link.format(zona, num_pag))
+        cont += 1
+    
+    #dic_links[zona] = links.copy()
+    #links.clear()
 
     return links
 
 
-async def get_html(link):
+async def get_html(link):    
     async with aiohttp.ClientSession() as session:
         async with session.get(link) as resp:
             resp.raise_for_status
@@ -100,15 +105,43 @@ async def create_dataframe(lista_precos, lista_areas, lista_quartos):
 
 
 async def create_csv():
-    links = await create_links(10)
+    # links = await create_links(2, 'sul')
+    l = await asyncio.gather(
+        create_links( 2, 'norte'),
+        create_links( 2, 'sul'),
+        create_links( 2, 'leste'),
+        create_links( 2, 'oeste'),
+    )
     tarefas = []
     precos = []
     areas = []
     quartos = []
+    cont = 0
 
+    pprint(l)
+
+    """for zona, link in links.items():
+        for endereco in link:
+            tarefas.append(asyncio.create_task(get_html(endereco)))
+    
+        for tarefa in tarefas:
+            # print(zona)
+            html = await tarefa
+
+            dados = await asyncio.gather(
+                get_precos(html),
+                get_atributos(html)
+            )"""
+            
+
+    
+    
+    
+    """
     for link in links:
         tarefas.append(asyncio.create_task(get_html(link)))
 
+    
     for tarefa in tarefas:
         html = await tarefa
 
@@ -117,13 +150,17 @@ async def create_csv():
             get_atributos(html)
         )
 
+        cont += len(dados[0])
+    print(cont)
+
         precos = precos + dados[0]
         areas = areas + dados[1][0]
         quartos = quartos + dados[1][1]
 
     df = await create_dataframe(precos, areas, quartos)
     df = pd.DataFrame(df)
-    df.to_csv('dados_imoveis_async.csv', index=False)
+    df.to_csv('dados_imoveis_async.csv', index=False)"""
+    
 
 
 def main():
